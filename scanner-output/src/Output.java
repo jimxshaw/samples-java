@@ -12,36 +12,30 @@ public class Output {
 	public static void main(String[] args) {
 		// GUI input to ask for real numbers
 		String str1 = JOptionPane.showInputDialog("Enter 1st real number: ");
-		double a = Double.parseDouble(str1);
+		float a = Float.parseFloat(str1);
 		
 		String str2 = JOptionPane.showInputDialog("Enter 2nd real number: ");
-		double b = Double.parseDouble(str2);
+		float b = Float.parseFloat(str2);
 		
 		String str3 = JOptionPane.showInputDialog("Enter 3rd real number: ");
-		double c = Double.parseDouble(str3);
+		float c = Float.parseFloat(str3);
 		
 		// If statements to test the values of the input
 		if (a > 0 && b > 0 && c > 0) {
 			System.out.printf("Sum:%10.2f", (a + b + c));
 			JOptionPane.showMessageDialog(null, "Sum: " + (a + b + c));
 		}
-		else if (a > 0 && b > 0 && c < 0 || a > 0 && b < 0 && c > 0 || a < 0 && b > 0 && c > 0) {
-			if (a < 0) {
-				System.out.printf("Product:%10.2f", (b * c));
-				JOptionPane.showMessageDialog(null, "Product: " + (b * c));
-			}
-			else if (b < 0) {
-				System.out.printf("Product:%10.2f", (a * c));
-				JOptionPane.showMessageDialog(null, "Product: " + (a * c));
-			}
-			else if (c < 0) {
-				System.out.printf("Product:%10.2f", (a * b));
-				JOptionPane.showMessageDialog(null, "Product: " + (a * b));
-			}
-			else {
-				System.out.println("Invalid numbers");
-				JOptionPane.showMessageDialog(null, "Invalid numbers");
-			}
+		else if (a > 0 && b > 0 && c < 0) {
+			System.out.printf("Product:%10.2f", (a * b));
+			JOptionPane.showMessageDialog(null, "Product: " + (a * b));
+		}
+		else if (a > 0 && b < 0 && c > 0) {
+			System.out.printf("Product:%10.2f", (a * c));
+			JOptionPane.showMessageDialog(null, "Product: " + (a * c));
+		}
+		else if (a < 0 && b > 0 && c > 0) {
+			System.out.printf("Product:%10.2f", (b * c));
+			JOptionPane.showMessageDialog(null, "Product: " + (b * c));
 		}
 		else {
 			System.out.println("Invalid numbers");
