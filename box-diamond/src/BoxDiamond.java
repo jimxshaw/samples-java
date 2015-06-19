@@ -1,5 +1,4 @@
 import javax.swing.*;
-
 import java.util.Scanner;
 import java.awt.Font;
 
@@ -12,12 +11,16 @@ public class BoxDiamond {
 		return new Scanner(System.in);
 	}
 	public static void showMessage(String s) {
+		JTextArea jta = new JTextArea(s);
+		jta.setFont(new Font("Lucida Console", Font.PLAIN, 35));
 		System.out.println(s);
-		JOptionPane.showMessageDialog(null, s);
+		JOptionPane.showMessageDialog(null, jta);
 	}
 	public static void showMessage(String s1, String s2) {
+		JTextArea jta = new JTextArea(s1);
+		jta.setFont(new Font("Lucida Console", Font.PLAIN, 35));
 		System.out.println(s1);
-		JOptionPane.showMessageDialog(null, s1, s2, JOptionPane.PLAIN_MESSAGE);
+		JOptionPane.showMessageDialog(null, jta, s2, JOptionPane.PLAIN_MESSAGE);
 	}
 	public static String drawBox(int n) {
 		String result = "";
@@ -30,8 +33,19 @@ public class BoxDiamond {
 		}
 		return result;
 	}
+	public static String drawVLine(int n) {
+		String result = "";
+		for (int x = 0; x < n; x++) {
+			for (int y = 0; y < n; y++) {
+				if (y == 0) result += "* ";
+			}
+			result += "\n";
+		}
+		return result;
+	}
 	public static void main(String[] args) {
-		showMessage(drawBox(7));
+		showMessage(drawBox(9));
+		showMessage(drawVLine(9));
 		
 		System.exit(0);
 	}
