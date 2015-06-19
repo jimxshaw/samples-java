@@ -19,9 +19,21 @@ public class BoxDiamond {
 		System.out.println(s1);
 		JOptionPane.showMessageDialog(null, s1, s2, JOptionPane.PLAIN_MESSAGE);
 	}
+	public static String drawBox(int n) {
+		String result = "";
+		for (int x = 0; x < n; x++) {
+			for (int y = 0; y < n; y++) {
+				if (x == 0 || x == n - 1 || y == 0 || y == n - 1) result += " *";
+				else result += "  ";
+			}
+			result += "\n";
+		}
+		return result;
+	}
 	public static void main(String[] args) {
+		showMessage(drawBox(7));
 		
-
+		System.exit(0);
 	}
 
 }
