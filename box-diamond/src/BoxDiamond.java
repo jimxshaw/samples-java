@@ -56,22 +56,22 @@ public class BoxDiamond {
 		String result = "";
 		int x = 1;
 		int y = n - 2;
-		int spaces1 = n / 2;
-		int spaces2 = 2 / n + 1;
+		int topSpaces = n / 2;
+		int bottomSpaces = 2 / n + 1;
 		while (x <= n) {
-			result += drawHLine(' ', spaces1) + drawHLine('*', x) + "\n";
+			result += drawHLine(' ', topSpaces) + drawHLine('*', x) + "\n";
 			x += 2;
-			spaces1--;
+			topSpaces--;
 		}
 		while (y >= 0) {
-			result += drawHLine(' ', spaces2) + drawHLine('*', y) + "\n";
+			result += drawHLine(' ', bottomSpaces) + drawHLine('*', y) + "\n";
 			y -= 2;
-			spaces2++;
+			bottomSpaces++;
 		}
 		return result;
 	}
 	public static void main(String[] args) {
-		showMessage(drawDiamond(5));
+		showMessage(drawDiamond(11));
 		
 		System.exit(0);
 	}
