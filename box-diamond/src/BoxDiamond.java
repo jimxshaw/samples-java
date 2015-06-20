@@ -43,6 +43,15 @@ public class BoxDiamond {
 		}
 		return result;
 	}
+	public static String drawHLine(char ch, int n) {
+		String result = "";
+		int x = 0;
+		while (x < n) {
+			result += " " + ch;
+			x++;
+		}
+		return result;
+	}
 	public static void main(String[] args) {
 		showMessage(drawBox(9));
 		showMessage(drawVLine(9));
