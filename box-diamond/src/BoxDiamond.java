@@ -12,7 +12,7 @@ public class BoxDiamond {
 	}
 	public static void showMessage(String s) {
 		JTextArea jta = new JTextArea(s);
-		jta.setFont(new Font("Lucida Console", Font.PLAIN, 35));
+		jta.setFont(new Font("Lucida Console", Font.PLAIN, 16));
 		System.out.println(s);
 		JOptionPane.showMessageDialog(null, jta);
 	}
@@ -52,9 +52,26 @@ public class BoxDiamond {
 		}
 		return result;
 	}
+	public static String drawDiamond(int n) {
+		String result = "";
+		int x = 1;
+		int y = n - 2;
+		int spaces1 = n / 2;
+		int spaces2 = 2 / n + 1;
+		while (x <= n) {
+			result += drawHLine(' ', spaces1) + drawHLine('*', x) + "\n";
+			x += 2;
+			spaces1--;
+		}
+		while (y >= 0) {
+			result += drawHLine(' ', spaces2) + drawHLine('*', y) + "\n";
+			y -= 2;
+			spaces2++;
+		}
+		return result;
+	}
 	public static void main(String[] args) {
-		showMessage(drawBox(9));
-		showMessage(drawVLine(9));
+		showMessage(drawDiamond(5));
 		
 		System.exit(0);
 	}
