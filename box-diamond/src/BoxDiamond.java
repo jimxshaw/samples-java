@@ -71,7 +71,38 @@ public class BoxDiamond {
 		return result;
 	}
 	public static void main(String[] args) {
-		showMessage(drawDiamond(11));
+		String str = "Enter an odd positive integer less than 20: ";
+		int x;
+		do {
+			x = Integer.parseInt(JOptionPane.showInputDialog(str));
+			if (x < 1 || x > 19 || x % 2 == 0) {
+				JOptionPane.showMessageDialog(null, "Invalid number. Please try again.");
+			}
+		}
+		while (x < 1 || x > 19 || x % 2 == 0);
+		
+		switch (x) {
+		case 3:
+			showMessage(drawBox(x), "Box");
+			break;
+		case 5: 
+			showMessage(drawDiamond(x), "Diamond");
+			break;
+		case 9:
+			showMessage(drawBox(x), "Box");
+			break;
+		case 11: 
+			showMessage(drawDiamond(x), "Diamond");
+			break;
+		case 15:
+			showMessage(drawDiamond(x), "Diamond");
+			break;
+		case 17:
+			showMessage(drawBox(x), "Box");
+			break;
+		default:
+			showMessage(drawVLine(x), "Vertical Line");
+		}
 		
 		System.exit(0);
 	}
