@@ -36,10 +36,7 @@ public class BoxDiamond {
 	public static String drawVLine(int n) {
 		String result = "";
 		for (int x = 0; x < n; x++) {
-			for (int y = 0; y < n; y++) {
-				if (y == 0) result += "* ";
-			}
-			result += "\n";
+			result += "*\n";
 		}
 		return result;
 	}
