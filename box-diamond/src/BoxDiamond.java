@@ -52,17 +52,20 @@ public class BoxDiamond {
 	public static String drawDiamond(int n) {
 		String result = "";
 		int x = 1;
-		int y = n - 2;
 		int topSpaces = n / 2;
 		int bottomSpaces = 2 / n + 1;
+		// loop to display top half of diamond
 		while (x <= n) {
 			result += drawHLine(' ', topSpaces) + drawHLine('*', x) + "\n";
 			x += 2;
 			topSpaces--;
 		}
-		while (y >= 0) {
-			result += drawHLine(' ', bottomSpaces) + drawHLine('*', y) + "\n";
-			y -= 2;
+		// x must be re-assigned in order for the loop to draw
+		// the bottom half of the diamond
+		x = n - 2;
+		while (x >= 0) {
+			result += drawHLine(' ', bottomSpaces) + drawHLine('*', x) + "\n";
+			x -= 2;
 			bottomSpaces++;
 		}
 		return result;
@@ -78,8 +81,12 @@ public class BoxDiamond {
 		return x;
 	}
 	public static void main(String[] args) {
+		// Until the user provides an integer within the specified parameters,
+        // the program will continue to ask for an input.
 		int x = requestNumber();
 		
+		// The input is assigned to x and is tested with a switch statement.
+        // Depending on x, a box or a diamond or a vertical line will be drawn.
 		switch (x) {
 		case 3:
 			showMessage(drawBox(x), "Box");
