@@ -16,11 +16,11 @@ public class BoxDiamond {
 		System.out.println(s);
 		JOptionPane.showMessageDialog(null, jta);
 	}
-	public static void showMessage(String s1, String s2) {
-		JTextArea jta = new JTextArea(s1);
+	public static void showMessage(String message, String title) {
+		JTextArea jta = new JTextArea(message);
 		jta.setFont(new Font("Lucida Console", Font.PLAIN, 35));
-		System.out.println(s1);
-		JOptionPane.showMessageDialog(null, jta, s2, JOptionPane.PLAIN_MESSAGE);
+		System.out.println(message);
+		JOptionPane.showMessageDialog(null, jta, title, JOptionPane.PLAIN_MESSAGE);
 	}
 	public static String drawBox(int n) {
 		String result = "";
@@ -67,7 +67,7 @@ public class BoxDiamond {
 		}
 		return result;
 	}
-	public static void main(String[] args) {
+	public static int requestNumber() {
 		String str = "Enter an odd positive integer less than 20: ";
 		int x;
 		do {
@@ -77,6 +77,10 @@ public class BoxDiamond {
 			}
 		}
 		while (x < 1 || x > 19 || x % 2 == 0);
+		return x;
+	}
+	public static void main(String[] args) {
+		int x = requestNumber();
 		
 		switch (x) {
 		case 3:
