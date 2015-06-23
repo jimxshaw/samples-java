@@ -33,6 +33,17 @@ public class BoxDiamond {
 		}
 		return result;
 	}
+	public static String drawSquare(int n) {
+		String result = "";
+		for (int x = 0; x < n; x++) {
+			for (int y = 0; y < n; y++) {
+				if (x == 0 || y == 0) result += " *";
+				else result += " *";
+			}
+			result += "\n";
+		}
+		return result;
+	}
 	public static String drawVLine(int n) {
 		String result = "";
 		for (int x = 0; x < n; x++) {
