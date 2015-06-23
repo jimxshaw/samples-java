@@ -72,9 +72,7 @@ public class BoxDiamond {
 		int x;
 		do {
 			x = Integer.parseInt(JOptionPane.showInputDialog(str));
-			if (x < 1 || x > 19 || x % 2 == 0) {
-				JOptionPane.showMessageDialog(null, "Invalid number. Please try again.");
-			}
+			str = "Invalid number. Enter an odd positive integer less than 20: ";
 		}
 		while (x < 1 || x > 19 || x % 2 == 0);
 		return x;
