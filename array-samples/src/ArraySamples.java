@@ -23,7 +23,7 @@ public class ArraySamples {
 			result += x[i] + " ";
 		return result;
 	}
-	public static void sortBySelection(int x[]) {
+	public static int[] sortBySelection(int x[]) {
 		for (int i = 0; i < x.length; i++) {
 			int largest = i;
 			for (int j = largest + 1; j < x.length; j++) {
@@ -34,6 +34,19 @@ public class ArraySamples {
 			x[i] = x[largest];
 			x[largest] = temp;
 		}
+		return x;
+	}
+	public static int[] sortByBubble(int x[]) {
+		for (int i = 0; i < x.length - 1; i++) {
+			for (int j = 0; j < x.length - 1; j++) {
+				if (x[j + 1] > x[j]) {
+					int temp = x[j];
+					x[j] = x[j + 1];
+					x[j + 1] = temp;
+				}
+			}
+		}
+		return x;
 	}
 	public static void main(String[] args) {
 		
