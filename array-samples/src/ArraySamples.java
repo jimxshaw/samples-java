@@ -23,6 +23,18 @@ public class ArraySamples {
 			result += x[i] + " ";
 		return result;
 	}
+	public static void sortBySelection(int x[]) {
+		for (int i = 0; i < x.length; i++) {
+			int largest = i;
+			for (int j = largest + 1; j < x.length; j++) {
+				if (x[j] > x[largest])
+					largest = j;
+			}
+			int temp = x[i];
+			x[i] = x[largest];
+			x[largest] = temp;
+		}
+	}
 	public static void main(String[] args) {
 		
 		System.exit(0);
