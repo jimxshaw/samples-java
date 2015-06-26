@@ -8,8 +8,15 @@ public class ArraySamples {
 	public static int[] getData(String input) {
 		StringTokenizer st = new StringTokenizer(input);
 		int x[] = new int[st.countTokens()];
-		for (int i = 0; st.hasMoreTokens(); i++)
-			x[i] = Integer.parseInt(st.nextToken());
+		for (int i = 0; st.hasMoreTokens(); i++) {
+			try {
+				x[i] = Integer.parseInt(st.nextToken());
+			}
+			catch (NumberFormatException nfe) {
+				x[i] = -1;
+				System.err.println("Input error -> " + nfe.getMessage());
+			}
+		}
 		return x;
 	}
 	public static float getAverage(int x[]) {
