@@ -2,27 +2,9 @@ import javax.swing.*;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 import java.awt.Font;
+import util.IO;
 
 public class ArraySamples {
-	public static Scanner getInput(String prompt) {
-		return new Scanner(JOptionPane.showInputDialog(prompt));
-	}
-	public static Scanner getConsoleInput(String prompt) {
-		System.out.println(prompt);
-		return new Scanner(System.in);
-	}
-	public static void showMessage(String s) {
-		JTextArea jta = new JTextArea(s);
-		jta.setFont(new Font("Lucida Console", Font.PLAIN, 16));
-		System.out.println(s);
-		JOptionPane.showMessageDialog(null, jta);
-	}
-	public static void showMessage(String message, String title) {
-		JTextArea jta = new JTextArea(message);
-		jta.setFont(new Font("Lucida Console", Font.PLAIN, 35));
-		System.out.println(message);
-		JOptionPane.showMessageDialog(null, jta, title, JOptionPane.PLAIN_MESSAGE);
-	}
 	public static int[] getData(String input) {
 		StringTokenizer st = new StringTokenizer(input);
 		int x[] = new int[st.countTokens()];
@@ -35,6 +17,22 @@ public class ArraySamples {
 		for (int i = 0; i < x.length; i++)
 			total += x[i];
 		return total / x.length;
+	}
+	public static int getHighest(int x[]) {
+		int highest = x[0];
+		for (int i = 0; i < x.length; i++) {
+			if (x[i] > highest)
+				highest = x[i];
+		}
+		return highest;
+	}
+	public static int getLowest(int x[]) {
+		int lowest = x[0];
+		for (int i = 0; i < x.length; i++) {
+			if (x[i] < lowest)
+				lowest = x[i];
+		}
+		return lowest;
 	}
 	public static String putArray(int x[]) {
 		String result = "";
@@ -70,9 +68,10 @@ public class ArraySamples {
 		
 		int x[] = getData(input);
 		
-		showMessage("Array: " + putArray(x) + 
+		IO.showMessage("Array: " + putArray(x) + 
 				"\nSorted: " + putArray(sortByBubble(x)) + 
-				String.format("\nAverage:%4.2f ", getAverage(x)));
+				String.format("\nAverage:%6.2f \nHighest:%4d \nLowest:%4d", 
+						getAverage(x), getHighest(x), getLowest(x)));
 		
 		System.exit(0);
 	}
