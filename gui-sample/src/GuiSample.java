@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.util.*;
+import java.awt.event.*;
 import java.awt.*;
 import util.IO;
 
@@ -25,6 +26,11 @@ public class GuiSample extends JFrame {
 		jmi = jm.add(new JMenuItem("Add...", 'A'));
 		jm.addSeparator();
 		jmi = jm.add(new JMenuItem("Exit", 'X'));
+		jmi.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
 		
 		// GUI configuration must be placed at the end
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
