@@ -32,6 +32,30 @@ public class GuiSample extends JFrame {
 			}
 		});
 		
+		// Sort menu
+		jm = jmb.add(new JMenu("Sort"));
+		jm.setMnemonic('S');
+		jmi = jm.add(new JMenuItem("Name", 'N'));
+		jmi = jm.add(new JMenuItem("Grade", 'G'));
+		
+		// Help menu
+		jm = jmb.add(new JMenu("About"));
+		jm.setMnemonic('H');
+		jmi = jm.add(new JMenuItem("About", 'A'));
+		
+		jmi.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(GuiSample.this, 
+                        new JLabel("<html><big><center>"
+                                + "Super GUI App v0.1<br>"
+                                + "Copyright &copy; 2015 Jim Shaw<br>"
+                                + "All Rights Reserved"
+                                + "</center></big></html>"), 
+                        "About", 
+                        JOptionPane.PLAIN_MESSAGE);
+            }
+        });
+		
 		// GUI configuration must be placed at the end
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(400, 400, 600, 500);
