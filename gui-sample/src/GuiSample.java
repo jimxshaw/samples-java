@@ -73,6 +73,10 @@ public class GuiSample extends JFrame {
         });
         
         jmi = jm.add(new JMenuItem("Grade", 'G'));
+        jmi.addActionListener(e -> {
+        	list.sortGrades();
+        	repaint();
+        });
 
         // Help Menu
         jm = jmb.add(new JMenu("Help"));

@@ -40,5 +40,15 @@ public class StudentList {
                     students[j] = tmp;
                 } 
     }
+    
+    public void sortGrades() {
+    	for (int i = 0; i < length() - 1; i++)
+    		for (int j = 0; j < length() - 1; j++)
+    			if (get(j + 1).grade > get(j).grade) {
+    				Student tmp = students[j + 1];
+                    students[j + 1] = students[j];
+                    students[j] = tmp;
+    			}
+    }
 }
 
