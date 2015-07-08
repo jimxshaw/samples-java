@@ -31,6 +31,13 @@ public class StudentList {
         }
     }
     
+    public void appendData(String input) {
+    	StringTokenizer st = new StringTokenizer(input);
+    	String name = st.nextToken();
+        int grade = Integer.parseInt(st.nextToken());
+        students[students.length - 1] = new Student(name, grade);
+    }
+    
     public void sortNames() {
         for (int i = 0; i < length() - 1; i++)
             for (int j = 0; j < length() - 1; j++)

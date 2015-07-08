@@ -34,7 +34,7 @@ public class GuiSample extends JFrame {
     }
 
     public GuiSample() {
-        // gui title
+        // Gui title
         super("Super Gui App");
 
         // Menus need 3 things
@@ -57,9 +57,16 @@ public class GuiSample extends JFrame {
         });
         
         jmi = jm.add(new JMenuItem("Add...", 'A'));
+        jmi.addActionListener(e -> {
+        	String input = JOptionPane.showInputDialog("Enter a student");
+        	if (input != null) {
+        		list.appendData(input);
+        		repaint();
+        	}
+        });
+        
         jm.addSeparator();
         jmi = jm.add(new JMenuItem("Exit", 'X'));
-
         // lambda expression
         jmi.addActionListener(e -> System.exit(0));
 
