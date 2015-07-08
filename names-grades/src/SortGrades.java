@@ -63,7 +63,8 @@ public class SortGrades {
             result += String.format("%-10s%4d\n", names[i], grades[i]);
         return result;
     }
-
+    
+    /*
     public static void sortBySelectionGrades(String names[], int grades[]) {
         for (int i = 0; i < grades.length; i++) {
             int largest = i;
@@ -99,6 +100,7 @@ public class SortGrades {
             grades[i] = temp2;
         }
     }
+    */
 
     public static String[] sortByBubbleGrades1(String names[], int grades[]) {
         for (int i = 0; i < grades.length - 1; i++) {
