@@ -56,17 +56,18 @@ public class SortGrades {
         }
         return lowest;
     }
-
-    public static void putArray(String names[], int grades[], int count) {
-        for (int i = 0; i < count; i++) {
-            System.out.printf(names[i] + "%10s", grades[i] + "\n");
-        }
+    
+    public static String putArray(String names[], int grades[]) {
+        String result = "";
+        for (int i = 0; i < names.length; i++)
+            result += String.format("%-10s%4d\n", names[i], grades[i]);
+        return result;
     }
 
-    public static void sortBySelectionGrades(String names[], int grades[], int count) {
-        for (int i = 0; i < count; i++) {
+    public static void sortBySelectionGrades(String names[], int grades[]) {
+        for (int i = 0; i < grades.length; i++) {
             int largest = i;
-            for (int j = largest + 1; j < count; j++) {
+            for (int j = largest + 1; j < grades.length; j++) {
                 if (grades[j] > grades[largest]) {
                     largest = j;
                 }
@@ -81,10 +82,10 @@ public class SortGrades {
         }
     }
     
-    public static void sortBySelectionNames(String names[], int grades[], int count) {
-        for (int i = 0; i < count; i++) {
+    public static void sortBySelectionNames(String names[], int grades[]) {
+        for (int i = 0; i < names.length; i++) {
             int largest = i;
-            for (int j = largest + 1; j < count; j++) {
+            for (int j = largest + 1; j < names.length; j++) {
                 if (names[j].compareTo(names[largest]) < 0) {
                     largest = j;
                 }
@@ -99,37 +100,75 @@ public class SortGrades {
         }
     }
 
-    public static void sortByBubbleGrades(String names[], int grades[], int count) {
-        for (int i = 0; i < count - 1; i++) {
-            for (int j = 0; j < count - 1; j++) {
+    public static String[] sortByBubbleGrades1(String names[], int grades[]) {
+        for (int i = 0; i < grades.length - 1; i++) {
+            for (int j = 0; j < grades.length - 1; j++) {
                 if (grades[j + 1] > grades[j]) {
                     String temp = names[j];
                     names[j] = names[j + 1];
                     names[j + 1] = temp;
-
+                    
                     int temp2 = grades[j];
                     grades[j] = grades[j + 1];
                     grades[j + 1] = temp2;
                 }
             }
         }
+        return names;
     }
     
-    public static void sortByBubbleNames(String names[], int grades[], int count) {
-        for (int i = 0; i < count - 1; i++) {
-            for (int j = 0; j < count - 1; j++) {
+    public static int[] sortByBubbleGrades2(String names[], int grades[]) {
+        for (int i = 0; i < grades.length - 1; i++) {
+            for (int j = 0; j < grades.length - 1; j++) {
+                if (grades[j + 1] > grades[j]) {
+                	String temp = names[j];
+                    names[j] = names[j + 1];
+                    names[j + 1] = temp;
+                	
+                    int temp2 = grades[j];
+                    grades[j] = grades[j + 1];
+                    grades[j + 1] = temp2;
+                }
+            }
+        }
+        return grades;
+    }
+    
+    public static String[] sortByBubbleNames1(String names[], int grades[]) {
+        for (int i = 0; i < names.length - 1; i++) {
+            for (int j = 0; j < names.length - 1; j++) {
                 if (names[j + 1].compareTo(names[j]) < 0) {
                     String temp = names[j];
                     names[j] = names[j + 1];
                     names[j + 1] = temp;
-
+                    
                     int temp2 = grades[j];
                     grades[j] = grades[j + 1];
                     grades[j + 1] = temp2;
                 }
             }
         }
+        return names;
     }
+    
+    public static int[] sortByBubbleNames2(String names[], int grades[]) {
+        for (int i = 0; i < names.length - 1; i++) {
+            for (int j = 0; j < names.length - 1; j++) {
+                if (names[j + 1].compareTo(names[j]) < 0) {
+                	String temp = names[j];
+                    names[j] = names[j + 1];
+                    names[j + 1] = temp;
+                	
+                    int temp2 = grades[j];
+                    grades[j] = grades[j + 1];
+                    grades[j + 1] = temp2;
+                }
+            }
+        }
+        return grades;
+    }
+    
+    
 
     public static void main(String[] args) {
         /* Regex
@@ -153,25 +192,12 @@ public class SortGrades {
         // placed in the grades array
         int grades[] = getIntData(input);
         
-        // An increment variable is used with a for loop
-        // This variable will then be used as the argument for
-        // various methods to modify the input data
-        int i = 0;
-        for (; i < names.length; i++);
-        
-        System.out.println("GRADE ORDER");
-        sortByBubbleGrades(names, grades, i);
-        putArray(names, grades, i);
-        
-        System.out.println();
-               
-        System.out.println("NAME ORDER");
-        sortByBubbleNames(names, grades, i);
-        putArray(names, grades, i);
-        
-        IO.showMessage(String.format("\nAverage:%6.2f \nHighest:%4d \nLowest:%4d",        
+        IO.showMessage("NAME ORDER\n" + putArray(sortByBubbleNames1(names, grades), sortByBubbleNames2(names, grades)) 
+        		+ "\nGRADE ORDER\n" + putArray(sortByBubbleGrades1(names, grades), sortByBubbleGrades2(names, grades)) 
+        		+ String.format("\nAverage:%6.2f \nHighest:%4d \nLowest:%4d",        
                 getAverage(grades), getHighest(grades), getLowest(grades)), 
                 "GRADE BREAKDOWN");
+        
         
         System.exit(0);
     }
