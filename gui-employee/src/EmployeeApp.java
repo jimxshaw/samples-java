@@ -2,8 +2,11 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import employee.*;
 
 public class EmployeeApp extends JFrame {
+
+    EmployeeList list = new EmployeeList();
 
     class GuiPanel extends JPanel {
 
@@ -11,7 +14,7 @@ public class EmployeeApp extends JFrame {
             super.paintComponent(g);
             Graphics2D g2d = (Graphics2D) g;
             g2d.setRenderingHint(
-                    RenderingHints.KEY_ANTIALIASING, 
+                    RenderingHints.KEY_ANTIALIASING,
                     RenderingHints.VALUE_ANTIALIAS_ON);
             GradientPaint gp = new GradientPaint(0, 0, Color.white, getWidth(), getHeight(), new Color(175, 255, 175));
             g2d.setPaint(gp);
@@ -21,12 +24,17 @@ public class EmployeeApp extends JFrame {
             g.drawString("Name", 20, 80);
             g.drawString("Age", 250, 80);
             g.drawString("Income", 420, 80);
+            for (int i = 0; i < list.length(); i++) {
+                Employee temp = list.get(i);
+                g.drawString(temp.getName(), 20, 160 + i * 80);
+                g.drawString(temp.getAge() + "", 250, 160 + i * 80);
+            }
         }
     }
 
     // constructor
     public EmployeeApp() {
-        super("Employee GUI App");
+        super("Super Gui App");
 
         JMenuBar jmb = new JMenuBar();
         setJMenuBar(jmb);
@@ -35,6 +43,14 @@ public class EmployeeApp extends JFrame {
         JMenu jm = jmb.add(new JMenu("File"));
         jm.setMnemonic('F');
         JMenuItem jmi = jm.add(new JMenuItem("New...", 'N'));
+        jmi.addActionListener(e -> {
+            String input = JOptionPane.showInputDialog(EmployeeApp.this, "Enter 1 or more employees");
+            if (input != null) {
+                list.getData(input);
+                repaint();
+            }
+        });
+
         jmi = jm.add(new JMenuItem("Add...", 'A'));
         jm.addSeparator();
         jmi = jm.add(new JMenuItem("Exit", 'X'));
