@@ -1,6 +1,8 @@
 package employee;
 
-public class Employee {
+// Abstract to a class means it can only be used as a base class.
+// On abstracted, objects of this class cannot be created.
+public abstract class Employee implements Comparable<Employee> {
 
     private String name;
     private int age;
@@ -30,10 +32,14 @@ public class Employee {
         this("", 0);
     }
 
-    public float getIncome() {
-        return 0;
+    // Abstract a method means the derived classes will provide the implementation.
+    public abstract float getIncome();
+    
+    // A base class can only have 1 compareTo method.
+    public int compareTo(Employee e) {
+    	return getName().compareTo(e.getName());
     }
-
+    
     public String toString() {
         return String.format("Name:%4s Age:%4d", getName(), getAge());
     }

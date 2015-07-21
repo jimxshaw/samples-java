@@ -36,39 +36,23 @@ public class EmployeeList {
     }
 
     public void sortNames() {
-        for (int i = 0; i < length() - 1; i++) {
-            for (int j = 0; j < length() - 1; j++) {
-                if (get(j + 1).getName().compareTo(get(j).getName()) < 0) {
-                    Employee temp = employees.get(j);
-                    employees.set(j, employees.get(j + 1));
-                    employees.set(j + 1, temp);
-                }
-            }
-        }
+        Collections.sort(employees);
     }
 
     public void sortAge() {
-        for (int i = 0; i < length() - 1; i++) {
-            for (int j = 0; j < length() - 1; j++) {
-                if (get(j + 1).getAge() < get(j).getAge()) {
-                    Employee temp = employees.get(j);
-                    employees.set(j, employees.get(j + 1));
-                    employees.set(j + 1, temp);
-                }
-            }
-        }
+        Collections.sort(employees, new Comparator<Employee>() {
+        	public int compare(Employee e1, Employee e2) {
+        		return Integer.compare(e1.getAge(), e2.getAge());
+        	}
+        });
     }
 
     public void sortIncome() {
-        for (int i = 0; i < length() - 1; i++) {
-            for (int j = 0; j < length() - 1; j++) {
-                if (get(j + 1).getIncome() > get(j).getIncome()) {
-                    Employee temp = employees.get(j);
-                    employees.set(j, employees.get(j + 1));
-                    employees.set(j + 1, temp);
-                }
-            }
-        }
+    	Collections.sort(employees, new Comparator<Employee>() {
+    		public int compare(Employee e1, Employee e2) {
+    			return Float.compare(e2.getIncome(), e1.getIncome());
+    		}
+    	});
     }
 
     public float getHighestIncome() {
