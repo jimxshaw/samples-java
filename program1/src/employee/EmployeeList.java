@@ -16,13 +16,7 @@ public class EmployeeList {
     
     public void getData(String input) {
         employees.clear();
-        Scanner scan = new Scanner(input);
-        for (; scan.hasNext();) {
-            String name = scan.next();
-            int age = scan.nextInt();
-            float income = scan.nextFloat();
-            employees.add(new SalaryEmployee(name, age, income));
-        }
+        appendData(input);
     }
 
     public void appendData(String input) {
