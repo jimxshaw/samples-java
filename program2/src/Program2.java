@@ -38,13 +38,13 @@ public class Program2 extends JFrame {
 				w = fm.stringWidth(s);
 				g.drawString(s, 590 - w, 160 + i * 80);
 
-				float highest = list.getHighestIncome();
-				float lowest = list.getLowestIncome();
-				float average = list.getAverageIncome();
+				String hi = nf.format(list.getHighestIncome());
+                String lo = nf.format(list.getLowestIncome());
+                String av = nf.format(list.getAverageIncome());
 
-				g.drawString("Highest: $" + highest, 670, 160);
-				g.drawString("Lowest: $" + lowest, 670, 260);
-				g.drawString("Average: $" + average, 670, 360);
+                g.drawString("Highest: " + hi, 670, 160);
+                g.drawString("Lowest: " + lo, 670, 260);
+                g.drawString("Average: " + av, 670, 360);
 			}
 		}
 	}
