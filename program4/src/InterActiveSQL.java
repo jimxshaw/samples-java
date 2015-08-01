@@ -1,4 +1,4 @@
-// Copyright (c) 2015 James Shaw  All rights reserved.
+// Copyright (c) 2015 James Shaw, All rights reserved.
 
 import javax.swing.*;
 import java.sql.*;
@@ -15,11 +15,9 @@ public class InterActiveSQL extends JFrame {
 	JPanel ConnectPanel;
 	static String op[] = { "Ok", "Cancel" };
 	String query;
-	JTextField jtf;
+	JTextField jtfUrl, jtfDriver;
 
-	public InterActiveSQL(String url, String driver) {
-		super("InteractiveSQL");
-		query = "Select * from Worker";
+	public void getConnection(String url, String driver) {
 		try {
 			Class.forName(driver);
 			con = DriverManager.getConnection(url);
@@ -30,6 +28,12 @@ public class InterActiveSQL extends JFrame {
 			System.err.println("SQL error");
 			System.exit(1);
 		}
+	}
+
+	public InterActiveSQL(String url, String driver) {
+		super("InteractiveSQL");
+		query = "Select * from Worker";
+		getConnection(url, driver);
 
 		// Connection Panel for Dialog
 		ConnectPanel = new JPanel();
@@ -41,12 +45,12 @@ public class InterActiveSQL extends JFrame {
 		ConnectPanel.add(jl = new JLabel("Data Source"));
 		jl.setBounds(0, 0, 76, 24);
 
-		ConnectPanel.add(jtf2 = new JTextField(url));
-		jtf2.setBounds(84, 0, 200, 24);
+		ConnectPanel.add(jtfUrl = new JTextField(url));
+		jtfUrl.setBounds(84, 0, 200, 24);
 		ConnectPanel.add(jl = new JLabel("Driver"));
 		jl.setBounds(0, 24, 80, 24);
-		ConnectPanel.add(jtf2 = new JTextField(driver, 25));
-		jtf2.setBounds(84, 24, 200, 24);
+		ConnectPanel.add(jtfDriver = new JTextField(driver, 25));
+		jtfDriver.setBounds(84, 24, 200, 24);
 		// even though JComponent has a setSize method that is
 		// not what is used to set the size;
 		ConnectPanel.setPreferredSize(new Dimension(300, 60));
@@ -69,15 +73,19 @@ public class InterActiveSQL extends JFrame {
 		jp.add(jb);
 		jb.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showOptionDialog(null, ConnectPanel,
-						"Set connection", JOptionPane.DEFAULT_OPTION,
-						JOptionPane.PLAIN_MESSAGE, null, op, op[0]);
+				if (JOptionPane.showOptionDialog(InterActiveSQL.this,
+						ConnectPanel, "Set connection",
+						JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+						null, op, op[0]) == 0) {
+					getConnection(jtfUrl.getText().trim(), jtfDriver.getText()
+							.trim());
+				}
 			}
 		});
 		// textfield
 		c.weightx = 1.0;
 		c.fill = GridBagConstraints.BOTH;
-		jtf = new JTextField(query, 28);
+		JTextField jtf = new JTextField(query, 28);
 		jtf.setFont(jtf.getFont().deriveFont(Font.BOLD, 12));
 		gb.setConstraints(jtf, c);
 		jp.add(jtf);
@@ -86,6 +94,14 @@ public class InterActiveSQL extends JFrame {
 				setTable(jtf.getText().trim());
 			}
 		});
+
+		jb = new JButton("Help");
+		c.weightx = 0.0;
+		c.fill = GridBagConstraints.NONE;
+		gb.setConstraints(jb, c);
+		jp.add(jb);
+		jb.addActionListener(e -> new MetalworksHelp());
+
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				try {
@@ -101,7 +117,7 @@ public class InterActiveSQL extends JFrame {
 		// the WindowListener is needed to make sure we
 		// shut down the connection
 		getContentPane().add(jp, BorderLayout.NORTH);
-		setBounds(100, 100, 500, 300);
+		setBounds(100, 100, 800, 600);
 		setVisible(true);
 	}
 
@@ -118,7 +134,12 @@ public class InterActiveSQL extends JFrame {
 			Statement stmt = con.createStatement();
 			// submit query - not all queries return resultsets
 			// but select does
-			query = q;
+
+			if (!q.toLowerCase().startsWith("select")) {
+				stmt.executeUpdate(q);
+			} else {
+				query = q;
+			}
 
 			ResultSet rs = stmt.executeQuery(query);
 
