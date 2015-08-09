@@ -6,8 +6,18 @@ public class CalcApp extends JFrame {
 
 	class GraphPanel extends JPanel {
 
+		Tree tree = new Tree();
+
+		GraphPanel() {
+			tree.parse("x*x*x");
+		}
+
 		float f(float x) {
-			return (float) (4 * Math.sin(x));
+			return tree.calc(x);
+		}
+
+		public void setEquation(String eqn) {
+			tree.parse(eqn);
 		}
 
 		public void paintComponent(Graphics g) {
@@ -82,20 +92,28 @@ public class CalcApp extends JFrame {
 
 		JPanel jp = new JPanel();
 		jp.setLayout(new BorderLayout());
-
+		JButton jb;
 		jp.add(new DisplayPanel(), BorderLayout.NORTH);
 		Font fnt = new Font("Calibri", Font.PLAIN, 20);
-		jp.add(new JButton("Graph")).setFont(fnt);
+		jp.add(jb = new JButton("Graph")).setFont(fnt);
 		jp.add(new CalcPanel(), BorderLayout.SOUTH);
 		jp.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-
+		GraphPanel gp = new GraphPanel();
+		jb.addActionListener(e -> {
+			String eqn = JOptionPane.showInputDialog(CalcApp.this,
+					"Enter an expression");
+			if (eqn != null) {
+				gp.setEquation(eqn);
+				repaint();
+			}
+		});
 		frame.add(jp, BorderLayout.EAST);
-		frame.add(new GraphPanel(), BorderLayout.CENTER);
+		frame.add(gp, BorderLayout.CENTER);
 
 		frame.setClosable(true);
 		frame.setResizable(true);
 
-		frame.setBounds(900, 400, 800, 300);
+		frame.setBounds(900, 400, 800, 600);
 		frame.setVisible(true);
 
 		desktop.add(frame);
@@ -123,3 +141,7 @@ public class CalcApp extends JFrame {
 		new CalcApp();
 	}
 }
+
+/*
+ * E -> P + E E -> P p -> T * P p -> T T -> <x> T -> <numbers>
+ */
