@@ -7,13 +7,33 @@ public class CalcApp extends JFrame {
 	class GraphPanel extends JPanel {
 
 		Tree tree = new Tree();
+		javax.swing.Timer timer;
+		float t;
+		long lastTime;
 
 		GraphPanel() {
 			tree.parse("x*x*x");
+			timer = new javax.swing.Timer(50, new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					GraphPanel.this.repaint();
+					long currTime = System.currentTimeMillis();
+					t += (currTime - lastTime) * .001f;
+					lastTime = currTime;
+				}
+			});
+		}
+
+		public void animate() {
+			if (timer.isRunning()) {
+				timer.stop();
+				return;
+			}
+			lastTime = System.currentTimeMillis();
+			timer.start();
 		}
 
 		float f(float x) {
-			return tree.calc(x);
+			return tree.calc(x + t);
 		}
 
 		public void setEquation(String eqn) {
@@ -76,7 +96,7 @@ public class CalcApp extends JFrame {
 	}
 
 	public CalcApp() {
-
+		GraphPanel gp = new GraphPanel();
 		JDesktopPane desktop = new JDesktopPane();
 		desktop.setBackground(new Color(192, 192, 255));
 
@@ -84,6 +104,9 @@ public class CalcApp extends JFrame {
 
 		JMenuItem jmi = popup.add(new JMenuItem("Exit"));
 		jmi.addActionListener(e -> System.exit(0));
+
+		jmi = popup.add(new JMenuItem("Animate"));
+		jmi.addActionListener(e -> gp.animate());
 
 		desktop.setComponentPopupMenu(popup);
 
@@ -98,7 +121,7 @@ public class CalcApp extends JFrame {
 		jp.add(jb = new JButton("Graph")).setFont(fnt);
 		jp.add(new CalcPanel(), BorderLayout.SOUTH);
 		jp.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-		GraphPanel gp = new GraphPanel();
+		// GraphPanel gp = new GraphPanel();
 		jb.addActionListener(e -> {
 			String eqn = JOptionPane.showInputDialog(CalcApp.this,
 					"Enter an expression");
