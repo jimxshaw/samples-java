@@ -28,6 +28,16 @@ public class Money {
     public void setCurrency(Currency currency) {
         this.currency = currency;
     }
+
+    public boolean isGreaterThan(Money operation) {
+        return (normalized() > operation.normalized());
+    }
+
+    private double normalized() {
+        return currency == Currency.USD ? value : value * currency.conversionRateTo(Currency.USD);
+    }
+
+
 }
 
 class Test {
@@ -39,11 +49,7 @@ class Test {
         Money balance = new Money(3.6, Currency.USD);
         Money request = new Money(5.2, Currency.EURO);
 
-        double normalizedBalance = balance.getValue() * balance.getCurrency().conversionRateTo(Currency.EURO);
-
-        double normalizedRequest = request.getValue() * request.getCurrency().conversionRateTo(Currency.USD);
-
-        if (normalizedBalance > normalizedRequest) {
+        if (balance.isGreaterThan(request)) {
             dispenseMoney(request);
         }
     }
