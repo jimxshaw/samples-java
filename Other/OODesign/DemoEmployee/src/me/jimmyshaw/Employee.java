@@ -14,7 +14,11 @@ class Money {
     }
 }
 
-abstract class Worker {
+interface Payable {
+    void pay();
+}
+
+abstract class Worker implements Payable {
     private String name;
 
     public Worker(String name) {
@@ -62,12 +66,12 @@ class Contractor extends Worker {
 }
 
 class AccountsPayable {
-    Worker[] workers;
+    private Payable[] creditors;
     // implementation...
 
     public void payEverybody() {
-        for (Worker worker : workers) {
-            worker.pay();
+        for (Payable creditor : creditors) {
+            creditor.pay();
         }
     }
 
