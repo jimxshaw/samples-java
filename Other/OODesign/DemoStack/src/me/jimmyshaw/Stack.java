@@ -3,32 +3,36 @@ package me.jimmyshaw;
 import java.util.*;
 
 class Stack<T> {
-    ArrayList<T> contents = new ArrayList<T>();
+    
+    T[] contents = (T[]) new Object[1000];
 
     private int stackPointer = 0;
 
     public void push(T item) {
-        contents.add(stackPointer++, item);
+        assert stackPointer < contents.length : "push to full stack";
+        contents[stackPointer++] = item;
     }
 
     public T pop() {
-        return contents.remove(--stackPointer);
+        assert stackPointer > 0 : "pop from empty stack";
+        return contents[--stackPointer];
     }
 
     public void pushMany(T[] items) {
-        for (T item : items) {
-            push(item);
-        }
+        assert (stackPointer + items.length) <= contents.length : "too many items";
+
+        System.arraycopy(items, 0, contents, stackPointer, items.length);
+        stackPointer += items.length;
     }
 
     public int size() {
-        return contents.size();
+        return contents.length;
     }
 
     public static void main(String[] args) {
-        Stack<String> myStack = new Stack<String>();
-        myStack.push("A");
-        String s = myStack.pop();
+        MonitorableStack<String> myStack = new MonitorableStack<String>();
+        myStack.pushMany(new String[]{"John", "Paul", "George", "Ringo"});
+        assert myStack.maximumSizeSoFar() == 4 : "Unexpected maximum size: " + myStack.maximumSizeSoFar();
     }
 }
 
