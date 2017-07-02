@@ -14,7 +14,7 @@ class Money {
     }
 }
 
-class Worker {
+abstract class Worker {
     private String name;
 
     public Worker(String name) {
@@ -22,8 +22,10 @@ class Worker {
     }
 
     public void pay() {
-        // implementation...
+        Money due = getAmountDue();
     }
+
+    abstract protected Money getAmountDue();
 }
 
 class Employee extends Worker {
@@ -36,6 +38,11 @@ class Employee extends Worker {
     public void attachTimesheet(Timesheet i) {
 
     }
+
+    protected Money getAmountDue() {
+        // implementation...
+        return new Money(99.99, Currency.getInstance("USD"));
+    }
 }
 
 class Contractor extends Worker {
@@ -46,7 +53,11 @@ class Contractor extends Worker {
     }
 
     public void attachInvoice(Invoice i) {
-        
+
+    }
+
+    protected Money getAmountDue() {
+        return new Money(129.99, Currency.getInstance("USD"));
     }
 }
 
