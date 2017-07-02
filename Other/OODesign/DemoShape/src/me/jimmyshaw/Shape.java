@@ -9,11 +9,12 @@ abstract class Shape {
         // implementation...
     }
 
-    abstract public void draw(Graphics g);
-
-    protected void setupGraphics(Graphics g) {
+    public void draw(Graphics g) {
         g.setColor(color);
+        render(g);
     }
+
+    abstract protected void render(Graphics g);
 }
 
 class Circle extends Shape {
@@ -21,8 +22,27 @@ class Circle extends Shape {
 
     private int radius;
 
-    public void draw(Graphics g) {
-        setupGraphics(g);
+    public Circle(Point center, int radius) {
+        this.center = center;
+        this.radius = radius;
+    }
+
+    public void render(Graphics g) {
+        // implementation...
+    }
+}
+
+class Line extends Shape {
+    private int start;
+
+    private int end;
+
+    public Line(int start, int end) {
+        this.start = start;
+        this.end = end;
+    }
+
+    protected void render(Graphics g) {
         // implementation...
     }
 }
