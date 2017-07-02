@@ -26,15 +26,41 @@ class Worker {
     }
 }
 
+class Employee extends Worker {
+    private Timesheet[] unpaidTimesheets;
+
+    public Employee(String name) {
+        super(name);
+    }
+
+    public void attachTimesheet(Timesheet i) {
+
+    }
+}
+
+class Contractor extends Worker {
+    private Invoice[] invoicesDue;
+
+    public Contractor(String name) {
+        super(name);
+    }
+
+    public void attachInvoice(Invoice i) {
+        
+    }
+}
 
 class AccountsPayable {
     Worker[] workers;
     // implementation...
 
-    public void PayEverybody() {
+    public void payEverybody() {
         for (Worker worker : workers) {
             worker.pay();
         }
     }
 
 }
+
+
+
