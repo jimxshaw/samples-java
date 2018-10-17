@@ -258,3 +258,5 @@ jspm_packages
 
 .idea
 *.iml
+
+.vscode
