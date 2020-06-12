@@ -1,5 +1,6 @@
 package com.github.flink;
 
+import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
@@ -19,17 +20,22 @@ public class FilterMovies {
                                                             .ignoreInvalidLines()
                                                             .types(Long.class, String.class, String.class);
 
-        DataSet<Movie> movies = lines.map(new MapFunction<Tuple3<Long, String, String>, Movie>() {
+        lines.map(new MapFunction<Tuple3<Long, String, String>, Movie>() {
             @Override
-            public Movie map(Tuple3<Long, String, String> csvLine) throws Exception {
+            public Movie map(Tuple3<Long, String, String> csvLine) {
                 String movieName = csvLine.f1;
                 String[] genres = csvLine.f2.split("\\|");
 
                 return new Movie(movieName, new HashSet<String>(Arrays.asList(genres)));
             }
-        });
+        }).filter(new FilterFunction<Movie>() {
+            @Override
+            public boolean filter(Movie movie) {
+                return movie.getGenres().contains("Drama");
+            }
+        }).writeAsText("filter-output");
 
-        movies.print();
+        env.execute();
     }
 }
 
