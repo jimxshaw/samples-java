@@ -20,7 +20,7 @@ public class FilterMovies {
                                                             .ignoreInvalidLines()
                                                             .types(Long.class, String.class, String.class);
 
-        DataSet<Movie> movies = lines.map(new MapFunction<Tuple3<Long, String, String>, Movie>() {
+        lines.map(new MapFunction<Tuple3<Long, String, String>, Movie>() {
             @Override
             public Movie map(Tuple3<Long, String, String> csvLine) {
                 String movieName = csvLine.f1;
@@ -28,16 +28,12 @@ public class FilterMovies {
 
                 return new Movie(movieName, new HashSet<String>(Arrays.asList(genres)));
             }
-        });
-
-        DataSet<Movie> filteredMovies = movies.filter(new FilterFunction<Movie>() {
+        }).filter(new FilterFunction<Movie>() {
             @Override
             public boolean filter(Movie movie) {
                 return movie.getGenres().contains("Drama");
             }
-        });
-
-        filteredMovies.writeAsText("filter-output");
+        }).writeAsText("filter-output");
 
         env.execute();
     }
