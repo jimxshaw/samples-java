@@ -37,7 +37,9 @@ public class FilterMovies {
             }
         });
 
-        filteredMovies.print();
+        filteredMovies.writeAsText("filter-output");
+
+        env.execute();
     }
 }
 
