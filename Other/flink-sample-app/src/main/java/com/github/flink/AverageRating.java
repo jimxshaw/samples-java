@@ -13,6 +13,7 @@ import org.apache.flink.util.Collector;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AverageRating {
     public static void main(String[] args) throws Exception {
@@ -60,5 +61,12 @@ public class AverageRating {
                         collector.collect(new Tuple2<>(genre, totalScore / count));
                     }
                 }).collect();
+
+        String result = distribution.stream()
+                .sorted((r1, r2) -> Double.compare(r1.f1, r2.f1))
+                .map(Object::toString)
+                .collect(Collectors.joining("\n"));
+
+        System.out.println(result);
     }
 }
