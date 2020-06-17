@@ -1,12 +1,14 @@
 package com.github.flink;
 
 import org.apache.flink.api.common.functions.GroupReduceFunction;
+import org.apache.flink.api.common.functions.JoinFunction;
 import org.apache.flink.api.common.functions.MapPartitionFunction;
 import org.apache.flink.api.common.functions.Partitioner;
 import org.apache.flink.api.common.operators.Order;
 import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.api.java.tuple.Tuple2;
+import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.util.Collector;
 
 import java.util.Iterator;
@@ -73,5 +75,23 @@ public class Top10Movies {
                                                         }
                                                     });
 
+        DataSet<Tuple2<Long, String>>  movies = env.readCsvFile("movies.csv")
+                                                    .ignoreFirstLine()
+                                                    .parseQuotedStrings('"')
+                                                    .ignoreInvalidLines()
+                                                    .includeFields(true, true, false)
+                                                    .types(Long.class, String.class);
+
+        movies.join(sorted)
+                .where(0)
+                .equalTo(0)
+                .with(new JoinFunction<Tuple2<Long, String>, Tuple2<Long, Double>, Tuple3<Long, String, Double>>() {
+
+                    @Override
+                    public Tuple3<Long, String, Double> join(Tuple2<Long, String> movie, Tuple2<Long, Double> rating) {
+                        return new Tuple3<>(movie.f0, movie.f1, rating.f1);
+                    }
+                })
+                .print();
     }
 }
