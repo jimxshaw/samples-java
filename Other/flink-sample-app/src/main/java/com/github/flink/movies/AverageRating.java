@@ -1,4 +1,4 @@
-package com.github.flink;
+package com.github.flink.movies;
 
 import org.apache.flink.api.common.functions.GroupReduceFunction;
 import org.apache.flink.api.common.functions.JoinFunction;
@@ -6,14 +6,12 @@ import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.api.java.tuple.Tuple3;
-import org.apache.flink.types.DoubleValue;
-import org.apache.flink.types.StringValue;
 import org.apache.flink.util.Collector;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class OptimizedAverageRating {
+public class AverageRating {
     public static void main(String[] args) throws Exception {
         ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 
@@ -31,34 +29,28 @@ public class OptimizedAverageRating {
         List<Tuple2<String, Double>> distribution = movies.join(ratings)
                 .where(0)
                 .equalTo(0)
-                .with(new JoinFunction<Tuple3<Long, String, String>, Tuple2<Long, Double>, Tuple3<StringValue, StringValue, DoubleValue>>() {
-
-                    private StringValue name = new StringValue();
-                    private StringValue genre = new StringValue();
-                    private DoubleValue score = new DoubleValue();
-                    private Tuple3<StringValue, StringValue, DoubleValue> result = new Tuple3<>(name, genre, score);
-
+                .with(new JoinFunction<Tuple3<Long, String, String>, Tuple2<Long, Double>, Tuple3<String, String, Double>>() {
                     @Override
-                    public Tuple3<StringValue, StringValue, DoubleValue> join(Tuple3<Long, String, String> movie,
-                                                                              Tuple2<Long, Double> rating) {
-                        name.setValue(movie.f1);
-                        genre.setValue(movie.f2.split("\\|")[0]);
-                        score.setValue(rating.f1);
-                        return result;
+                    public Tuple3<String, String, Double> join(Tuple3<Long, String, String> movie,
+                                                               Tuple2<Long, Double> rating) {
+                        String name = movie.f1;
+                        String genre = movie.f2.split("\\|")[0];
+                        Double score = rating.f1;
+                        return new Tuple3<>(name, genre, score);
                     }
                 })
                 .groupBy(1)
-                .reduceGroup(new GroupReduceFunction<Tuple3<StringValue, StringValue, DoubleValue>, Tuple2<String, Double>>() {
+                .reduceGroup(new GroupReduceFunction<Tuple3<String, String, Double>, Tuple2<String, Double>>() {
                     @Override
-                    public void reduce(Iterable<Tuple3<StringValue, StringValue, DoubleValue>> iterable,
+                    public void reduce(Iterable<Tuple3<String, String, Double>> iterable,
                                        Collector<Tuple2<String, Double>> collector) throws Exception {
                         String genre = null;
                         int count = 0;
                         double totalScore = 0;
 
-                        for (Tuple3<StringValue, StringValue, DoubleValue> movie : iterable) {
-                            genre = movie.f1.getValue();
-                            totalScore += movie.f2.getValue();
+                        for (Tuple3<String, String, Double> movie : iterable) {
+                            genre = movie.f1;
+                            totalScore += movie.f2;
                             count++;
                         }
 
@@ -74,4 +66,3 @@ public class OptimizedAverageRating {
         System.out.println(result);
     }
 }
-
