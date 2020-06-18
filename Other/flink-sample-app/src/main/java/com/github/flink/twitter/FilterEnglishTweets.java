@@ -21,9 +21,13 @@ public class FilterEnglishTweets {
         Properties props = new Properties();
         props.setProperty(TwitterSource.CONSUMER_KEY, yamlMaps.get("API_KEY").toString());
         props.setProperty(TwitterSource.CONSUMER_SECRET, yamlMaps.get("API_KEY_SECRET").toString());
-        props.setProperty(TwitterSource.TOKEN, yamlMaps.get("BEARER_TOKEN").toString());
+        props.setProperty(TwitterSource.TOKEN, yamlMaps.get("ACCESS_TOKEN").toString());
+        props.setProperty(TwitterSource.TOKEN_SECRET, yamlMaps.get("ACCESS_TOKEN_SECRET").toString());
 
-        env.addSource(new TwitterSource(props));
+        env.addSource(new TwitterSource(props))
+           .print();
+
+        env.execute();
     }
 }
 
