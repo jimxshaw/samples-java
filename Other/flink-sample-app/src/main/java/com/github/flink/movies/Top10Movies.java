@@ -1,4 +1,4 @@
-package com.github.flink;
+package com.github.flink.movies;
 
 import org.apache.flink.api.common.functions.GroupReduceFunction;
 import org.apache.flink.api.common.functions.JoinFunction;
