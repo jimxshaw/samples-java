@@ -261,3 +261,4 @@ jspm_packages
 
 .vscode
 *.csv
+secrets.yml
