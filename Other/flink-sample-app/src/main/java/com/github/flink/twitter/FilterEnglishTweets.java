@@ -1,5 +1,6 @@
 package com.github.flink.twitter;
 
+import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.connectors.twitter.TwitterSource;
 import org.yaml.snakeyaml.Yaml;
@@ -25,31 +26,15 @@ public class FilterEnglishTweets {
         props.setProperty(TwitterSource.TOKEN_SECRET, yamlMaps.get("ACCESS_TOKEN_SECRET").toString());
 
         env.addSource(new TwitterSource(props))
-           .print();
+                .map(new MapToTweet())
+                .filter(new FilterFunction<Tweet>() {
+                    @Override
+                    public boolean filter(Tweet tweet) throws Exception {
+                        return tweet.getLanguage().equals("en");
+                    }
+                })
+                .print();
 
         env.execute();
-    }
-}
-
-class Tweet {
-    private String language;
-    private String text;
-
-    public Tweet(String language, String text) {
-        this.language = language;
-        this.text = text;
-    }
-
-    public String getLanguage() {
-        return language;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    @Override
-    public String toString() {
-        return "Tweet: " + language + " " + text;
     }
 }
