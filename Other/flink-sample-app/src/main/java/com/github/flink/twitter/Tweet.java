@@ -1,12 +1,16 @@
 package com.github.flink.twitter;
 
+import java.util.List;
+
 class Tweet {
     private String language;
     private String text;
+    private List<String> tags;
 
-    public Tweet(String language, String text) {
+    public Tweet(String language, String text, List<String> tags) {
         this.language = language;
         this.text = text;
+        this.tags = tags;
     }
 
     public String getLanguage() {
@@ -17,8 +21,17 @@ class Tweet {
         return text;
     }
 
+    public List<String> getTags() {
+        return tags;
+    }
+
     @Override
     public String toString() {
-        return "Tweet: " + language + " " + text;
+
+        return "Tweet{" +
+                "language='" + language + '\'' +
+                ", text='" + text + '\'' +
+                ", tags=" + tags +
+                '}';
     }
 }
