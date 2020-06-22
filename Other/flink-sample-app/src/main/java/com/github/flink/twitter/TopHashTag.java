@@ -4,6 +4,7 @@ import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.streaming.connectors.twitter.TwitterSource;
 import org.apache.flink.util.Collector;
 import org.yaml.snakeyaml.Yaml;
@@ -48,6 +49,15 @@ public class TopHashTag {
                         }
                     }
                 })
+                // Create a logical stream for every hashtag.
+                .keyBy(0)
+                // Tumbling window of 10 minutes.
+                .timeWindow(Time.minutes(10))
+                // Sum every tag's integer value, in this case 1, in all
+                // tuples with the same hashtag. Since each tuple's integer value is 1, this
+                // can easily count how many times a hashtag has been encountered
+                // in the time interval.
+                .sum(1)
                 .print();
 
         env.execute();
