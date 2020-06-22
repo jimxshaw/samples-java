@@ -29,22 +29,22 @@ public class LanguageControlStream {
 
         env.execute();
     }
-}
 
-static class LanguageConfig {
-    private String language;
-    private boolean shouldProcess;
+    static class LanguageConfig {
+        private String language;
+        private boolean shouldProcess;
 
-    public LanguageConfig(String language, boolean shouldProcess) {
-        this.language = language;
-        this.shouldProcess = shouldProcess;
-    }
+        public LanguageConfig(String language, boolean shouldProcess) {
+            this.language = language;
+            this.shouldProcess = shouldProcess;
+        }
 
-    public String getLanguage() {
-        return language;
-    }
+        public String getLanguage() {
+            return language;
+        }
 
-    public boolean isShouldProcess() {
-        return this.shouldProcess;
+        public boolean isShouldProcess() {
+            return this.shouldProcess;
+        }
     }
 }
