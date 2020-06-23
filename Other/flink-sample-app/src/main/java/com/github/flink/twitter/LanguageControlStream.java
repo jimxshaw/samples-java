@@ -107,7 +107,7 @@ public class LanguageControlStream {
                     }
                 })
                 // WARNING: Flink expects the control stream to be open
-                // so open the socket where we'll write controlled messaged.
+                // so open the socket where we'll write controlled messages.
                 // The application will crash if the socket isn't open.
                 // Open up Terminal or CMD and issue the command:
                 // nc -l [port]
