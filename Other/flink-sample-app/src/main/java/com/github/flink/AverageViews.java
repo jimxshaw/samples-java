@@ -21,6 +21,18 @@ public class AverageViews {
             return;
         }
 
+        // Map splits the row into <webpageid, view in minutes, 1>.
+        // The key is the web page id.
+        // Track the running sum and count for each time the page
+        // was viewed <webpageid, time, count>.
+        // Find the average number of minutes spend on each web page.
+        DataStream<Tuple2<String, Double>> averageViewStream = dataStream.map(new RowSplitter())
+                                                                        .keyBy(0)
+                                                                        .reduce(new SumAndCount())
+                                                                        .map(new Average());
+
+        averageViewStream.print();
+
         env.execute("Average Views");
     }
 }
