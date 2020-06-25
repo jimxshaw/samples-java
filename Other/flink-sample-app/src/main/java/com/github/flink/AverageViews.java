@@ -1,6 +1,8 @@
 package com.github.flink;
 
+import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.java.tuple.Tuple2;
+import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -34,5 +36,20 @@ public class AverageViews {
         averageViewStream.print();
 
         env.execute("Average Views");
+    }
+
+    // Input string and return a tuple of <webpageid, view in minutes, 1>.
+    public static class RowSplitter implements MapFunction<String, Tuple3<String, Double, Integer>> {
+
+        @Override
+        public Tuple3<String, Double, Integer> map(String row) throws Exception {
+            String[] fields = row.split(",");
+
+            if (fields.length == 2) {
+                return new Tuple3<>(fields[0], Double.parseDouble(fields[1]), 1);
+            }
+
+            return null;
+        }
     }
 }
