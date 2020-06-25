@@ -67,4 +67,13 @@ public class AverageViews {
             return new Tuple3<>(input.f0, cumulative.f1 + input.f1, cumulative.f2 + input.f2);
         }
     }
+
+    public static class Average implements MapFunction<Tuple3<String, Double, Integer>, Tuple2<String, Double>> {
+
+        @Override
+        public Tuple2<String, Double> map(Tuple3<String, Double, Integer> input) throws Exception {
+            // Average view time is the sum / count.
+            return new Tuple2<>(input.f0, input.f1 / input.f2);
+        }
+    }
 }
