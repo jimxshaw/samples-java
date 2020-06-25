@@ -1,6 +1,7 @@
 package com.github.flink;
 
 import org.apache.flink.api.common.functions.MapFunction;
+import org.apache.flink.api.common.functions.ReduceFunction;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.api.java.utils.ParameterTool;
@@ -50,6 +51,20 @@ public class AverageViews {
             }
 
             return null;
+        }
+    }
+
+    public static class SumAndCount implements ReduceFunction<Tuple3<String, Double, Integer>> {
+
+        @Override
+        public Tuple3<String, Double, Integer> reduce(Tuple3<String, Double, Integer> cumulative,
+                                                      Tuple3<String, Double, Integer> input) throws Exception {
+            // Add up the cumulative results of the reduce method tracked by Flink and the current input.
+            // In the tuple, the first value is the key itself. Second and third values are summing
+            // of the cumulative values so far and the new input, new streaming entity.
+            // F1 is the number of minutes a particular user stayed on a particular web page and
+            // F2 is a count of users who visited that page.
+            return new Tuple3<>(input.f0, cumulative.f1 + input.f1, cumulative.f2 + input.f2);
         }
     }
 }
