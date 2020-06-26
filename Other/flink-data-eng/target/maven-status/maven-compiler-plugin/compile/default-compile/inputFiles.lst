@@ -1,0 +1,14 @@
+/Users/jimxshaw/Projects/samples-java/Other/flink-data-eng/src/main/java/com/flinklearn/realtime/chapter6/BrowserStreamDataGenerator.java
+/Users/jimxshaw/Projects/samples-java/Other/flink-data-eng/src/main/java/com/flinklearn/realtime/datasource/FileStreamDataGenerator.java
+/Users/jimxshaw/Projects/samples-java/Other/flink-data-eng/src/main/java/com/flinklearn/realtime/chapter3/WindowingOperations.java
+/Users/jimxshaw/Projects/samples-java/Other/flink-data-eng/src/main/java/com/flinklearn/realtime/chapter2/AuditTrail.java
+/Users/jimxshaw/Projects/samples-java/Other/flink-data-eng/src/main/java/com/flinklearn/realtime/chapter2/BasicStreamingOperations.java
+/Users/jimxshaw/Projects/samples-java/Other/flink-data-eng/src/main/java/com/flinklearn/realtime/datasource/KafkaStreamDataGenerator.java
+/Users/jimxshaw/Projects/samples-java/Other/flink-data-eng/src/main/java/com/flinklearn/realtime/chapter6/CourseUseCase.java
+/Users/jimxshaw/Projects/samples-java/Other/flink-data-eng/src/main/java/com/flinklearn/realtime/chapter4/EventTimeOperations.java
+/Users/jimxshaw/Projects/samples-java/Other/flink-data-eng/src/main/java/com/flinklearn/realtime/common/Utils.java
+/Users/jimxshaw/Projects/samples-java/Other/flink-data-eng/src/main/java/com/flinklearn/realtime/chapter5/StatefulOperations.java
+/Users/jimxshaw/Projects/samples-java/Other/flink-data-eng/src/main/java/com/flinklearn/realtime/chapter2/KeyedStreamOperations.java
+/Users/jimxshaw/Projects/samples-java/Other/flink-data-eng/src/main/java/com/flinklearn/realtime/common/MapCountPrinter.java
+/Users/jimxshaw/Projects/samples-java/Other/flink-data-eng/src/main/java/com/flinklearn/realtime/chapter3/WindowJoins.java
+/Users/jimxshaw/Projects/samples-java/Other/flink-data-eng/src/main/java/com/flinklearn/realtime/chapter2/StreamSplitAndCombine.java
