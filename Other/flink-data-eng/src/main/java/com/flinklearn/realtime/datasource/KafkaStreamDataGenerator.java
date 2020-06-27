@@ -43,20 +43,20 @@ public class KafkaStreamDataGenerator implements Runnable {
                     = new KafkaProducer<String, String>(kafkaProps);
 
             //Define list of users
-            List<String> appUser = new ArrayList<String>();
+            List<String> appUser = new ArrayList<>();
             appUser.add("Tom");
             appUser.add("Harry");
             appUser.add("Bob");
 
             //Define list of application operations
-            List<String> appOperation = new ArrayList<String>();
+            List<String> appOperation = new ArrayList<>();
             appOperation.add("Create");
             appOperation.add("Modify");
             appOperation.add("Query");
             appOperation.add("Delete");
 
             //Define list of application entities
-            List<String> appEntity = new ArrayList<String>();
+            List<String> appEntity = new ArrayList<>();
             appEntity.add("Customer");
             appEntity.add("SalesRep");
 
@@ -87,10 +87,10 @@ public class KafkaStreamDataGenerator implements Runnable {
 
                 String recKey = String.valueOf(currentTime);
                 ProducerRecord<String, String> record =
-                        new ProducerRecord<String,String>(
+                        new ProducerRecord<>(
                                 "flink.kafka.streaming.source",
                                 recKey,
-                                String.join(",", csvText)  );
+                                String.join(",", csvText));
 
                 RecordMetadata rmd = myProducer.send(record).get();
 

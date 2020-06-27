@@ -34,20 +34,20 @@ public class FileStreamDataGenerator implements Runnable {
         try {
 
             //Define list of users
-            List<String> appUser = new ArrayList<String>();
+            List<String> appUser = new ArrayList<>();
             appUser.add("Tom");
             appUser.add("Harry");
             appUser.add("Bob");
 
             //Define list of application operations
-            List<String> appOperation = new ArrayList<String>();
+            List<String> appOperation = new ArrayList<>();
             appOperation.add("Create");
             appOperation.add("Modify");
             appOperation.add("Query");
             appOperation.add("Delete");
 
             //Define list of application entities
-            List<String> appEntity = new ArrayList<String>();
+            List<String> appEntity = new ArrayList<>();
             appEntity.add("Customer");
             appEntity.add("SalesRep");
 
