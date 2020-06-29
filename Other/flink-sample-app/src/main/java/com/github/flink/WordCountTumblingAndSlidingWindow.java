@@ -5,6 +5,7 @@ import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.windowing.assigners.SlidingAlignedProcessingTimeWindows;
 import org.apache.flink.streaming.api.windowing.assigners.TumblingAlignedProcessingTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.util.Collector;
@@ -36,6 +37,13 @@ public class WordCountTumblingAndSlidingWindow {
                                                                         .keyBy(0)
                                                                         .window(TumblingAlignedProcessingTimeWindows.of(Time.seconds(10)))
                                                                         .sum(1);
+
+        // A sliding window takes 2 parameters of window size and sliding interval,
+        // which is the overlap that exists between consecutive windows.
+//        DataStream<Tuple2<String, Integer>> wordCountStream = dataStream.flatMap(new WordCountSplitter())
+//                                                                        .keyBy(0)
+//                                                                        .window(SlidingAlignedProcessingTimeWindows.of(Time.seconds(30), Time.seconds(10)))
+//                                                                        .sum(1);
 
         env.execute("Tumbling and Sliding Window");
     }
