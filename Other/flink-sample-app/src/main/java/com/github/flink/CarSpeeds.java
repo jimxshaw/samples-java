@@ -1,9 +1,9 @@
 package com.github.flink;
 
 import org.apache.flink.api.common.functions.MapFunction;
+import org.apache.flink.api.common.functions.ReduceFunction;
 import org.apache.flink.api.common.functions.RichFlatMapFunction;
-import org.apache.flink.api.common.state.ValueState;
-import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.api.common.state.*;
 import org.apache.flink.api.common.typeinfo.TypeHint;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.tuple.Tuple2;
@@ -12,6 +12,7 @@ import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.util.Collector;
+import scala.Int;
 
 public class CarSpeeds {
     public static void main(String[] args) throws Exception {
@@ -35,6 +36,14 @@ public class CarSpeeds {
         DataStream<String> averageViewStream = dataStream.map(new Speed())
                                                         .keyBy(0)
                                                         .flatMap(new AverageSpeedValueState());
+
+//        DataStream<String> averageViewStream = dataStream.map(new Speed())
+//                                                        .keyBy(0)
+//                                                        .flatMap(new AverageSpeedListState());
+
+//        DataStream<String> averageViewStream = dataStream.map(new Speed())
+//                                                        .keyBy(0)
+//                                                        .flatMap(new AverageSpeedReducingState());
 
         env.execute("Car Speeds");
     }
@@ -96,6 +105,8 @@ public class CarSpeeds {
             countSumState.update(currentCountSum);
         }
 
+
+
         // Set up the initial values for the count and sum.
         // The Flink runtime and the rich function will ensure
         // that this open method is called before flat map is called
@@ -110,6 +121,106 @@ public class CarSpeeds {
             );
 
             countSumState = getRuntimeContext().getState(descriptor);
+        }
+    }
+
+    public static class AverageSpeedListState extends RichFlatMapFunction<Tuple2<Integer, Double>, String> {
+        private transient ListState<Double> speedListState;
+
+        @Override
+        public void flatMap(Tuple2<Integer, Double> input, Collector<String> out) throws Exception {
+            if (input.f1 >= 65) {
+                // This iterable holds all the car speeds since the
+                // last car that exceeded the speed limit.
+                Iterable<Double> carSpeeds = speedListState.get();
+
+                int count = 0;
+                double sum = 0;
+
+                for (Double carSpeed : carSpeeds) {
+                    count++;
+                    sum += carSpeed;
+                }
+
+                out.collect(String.format(
+                        "EXCEEDED! The average speed of the last %s car(s) was %s," + "your speed is %s",
+                        count,
+                        sum / count,
+                        input.f1));
+
+                speedListState.clear();
+            }
+            else {
+                out.collect("Thank you for staying under the speed limit!");
+            }
+
+            // Since we calculate the sum and the count when the car
+            // exceeds the speed limit, for every car we only need
+            // to add the speed of the car to our list.
+            speedListState.add(input.f1);
+        }
+
+        public void open(Configuration config) {
+            // This allows us to initialize a value state.
+            ListStateDescriptor<Double> descriptor = new ListStateDescriptor<>(
+                    "carAverageSpeed", Double.class);
+
+            speedListState = getRuntimeContext().getListState(descriptor);
+        }
+    }
+
+    public static class AverageSpeedReducingState extends RichFlatMapFunction<Tuple2<Integer, Double>, String> {
+
+        // ValueState will store the count of cars we've seen
+        // so far since the last speeding car.
+        // ReducingState holds the sum of the car speeds, sum()
+        // is the reduce operation.
+        private transient ValueState<Integer> countState;
+        private transient ReducingState<Double> sumState;
+
+        @Override
+        public void flatMap(Tuple2<Integer, Double> input, Collector<String> out) throws Exception {
+            if (input.f1 >= 65) {
+                double sumSpeed = sumState.get();
+                int count = countState.value();
+
+                out.collect(String.format(
+                        "EXCEEDED! The average speed of the last %s car(s) was %s," + "your speed is %s",
+                        count,
+                        sumSpeed / count,
+                        input.f1));
+
+                countState.clear();
+                sumState.clear();
+            }
+            else {
+                out.collect("Thank you for staying under the speed limit!");
+            }
+
+            countState.update(countState.value() + 1);
+            sumState.add(input.f1);
+        }
+
+        public void open(Configuration config) {
+            // This allows us to initialize a value state.
+            ValueStateDescriptor<Integer> valueStateDescriptor = new ValueStateDescriptor<>(
+                    "carCount", Integer.class);
+
+            countState = getRuntimeContext().getState(valueStateDescriptor);
+
+            // Take the new car speed and we
+            // add it to the cumulative sum.
+            ReducingStateDescriptor<Double> reducingStateDescriptor = new ReducingStateDescriptor<>(
+                    "averageSpeed",
+                    new ReduceFunction<Double>() {
+                        @Override
+                        public Double reduce(Double cumulative, Double input) throws Exception {
+                            return cumulative + input;
+                        }
+                    },
+                    Double.class);
+
+            sumState = getRuntimeContext().getReducingState(reducingStateDescriptor);
         }
     }
 }
