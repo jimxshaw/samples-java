@@ -2,6 +2,7 @@ package com.github.flink;
 
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.common.functions.RichFlatMapFunction;
+import org.apache.flink.api.common.restartstrategy.RestartStrategies;
 import org.apache.flink.api.common.state.ValueState;
 import org.apache.flink.api.common.state.ValueStateDescriptor;
 import org.apache.flink.api.common.typeinfo.TypeHint;
@@ -9,6 +10,7 @@ import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.configuration.Configuration;
+import org.apache.flink.runtime.executiongraph.restart.RestartStrategy;
 import org.apache.flink.runtime.state.filesystem.FsStateBackend;
 import org.apache.flink.streaming.api.CheckpointingMode;
 import org.apache.flink.streaming.api.datastream.DataStream;
@@ -36,6 +38,9 @@ public class CarSpeedsWithCheckpoints {
 
         // Any backend can be configured to store this checkpoint.
         env.setStateBackend(new FsStateBackend("file:///tmp/flink/checkpoints"));
+
+        // Configure a restart strategy.
+        env.setRestartStrategy(RestartStrategies.fixedDelayRestart(2, 2000));
 
         DataStream<String> dataStream = StreamUtil.getDataStream(env, params);
 
