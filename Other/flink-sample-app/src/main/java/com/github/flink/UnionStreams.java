@@ -15,6 +15,15 @@ public class UnionStreams {
         DataStream<String> stream1 = env.socketTextStream("localhost", 8000);
         DataStream<String> stream2 = env.socketTextStream("localhost", 9000);
 
+        if (stream1 == null || stream2 == null) {
+            System.exit(1);
+            return;
+        }
+
+        DataStream<String> unionStream = stream1.union(stream2);
+
+        unionStream.print();
+
         env.execute("Union");
     }
 }
